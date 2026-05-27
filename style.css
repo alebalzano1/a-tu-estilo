@@ -1984,7 +1984,21 @@ footer {
   }
   
   nav {
-    padding: 0 20px;
+    padding: 0 15px;
+  }
+  
+  .logo-long-text {
+    display: none;
+  }
+  
+  .nav-logo {
+    font-size: 1.2rem;
+    white-space: nowrap;
+    gap: 4px;
+  }
+  
+  .btn-nav-wa {
+    display: none !important;
   }
   
   .nav-links {

@@ -1,5 +1,6 @@
 // Datos de autosiembra inicial (Seeding) para Hamburguesas A Tu Estilo
 const initialProducts = [
+  // CATEGORÍA: HAMBURGUESAS (hamburgesa)
   {
     id: 1,
     cat: 'hamburgesa',
@@ -52,6 +53,8 @@ const initialProducts = [
     remove: ['Jalapeños', 'Cebolla crujiente', 'Salsa picante'],
     available: true
   },
+
+  // CATEGORÍA: PAPAS (papas)
   {
     id: 5,
     cat: 'papas',
@@ -59,6 +62,7 @@ const initialProducts = [
     name: 'Papas Rústicas',
     desc: 'Papas fritas con corte rústico artesanal, sal marina de la patagonia y hojas de romero fresco.',
     price: 2800,
+    sizes: { chica: 2800, grande: 3800 }, // Selector de tamaño
     featured: false,
     image: 'assets/papas_clasicas.png',
     extras: ['Cheddar fundido cremoso +$600', 'Bacon ahumado picado +$700'],
@@ -72,12 +76,15 @@ const initialProducts = [
     name: 'Papas Cheddar & Bacon',
     desc: 'Nuestras papas rústicas bañadas en una cremosa salsa de queso cheddar casera y lluvia de bacon crujiente.',
     price: 3600,
+    sizes: { chica: 3600, grande: 4600 }, // Selector de tamaño
     featured: false,
     image: 'assets/papas_cheddar.png',
     extras: ['Doble porción bacon +$700', 'Jalapeños en rodajas +$400'],
     remove: [],
     available: true
   },
+
+  // CATEGORÍA: BEBIDAS (bebidas)
   {
     id: 7,
     cat: 'bebidas',
@@ -85,12 +92,70 @@ const initialProducts = [
     name: 'Limonada de Menta',
     desc: 'Limonada natural exprimida al momento, macerada con menta fresca, jengibre y hielo triturado.',
     price: 1800,
+    sub: '500cc - Natural',
     featured: false,
     image: 'assets/limonada.png',
     extras: ['Endulzar con miel +$200'],
     remove: ['Menta', 'Jengibre'],
     available: true
   },
+  {
+    id: 10,
+    cat: 'bebidas',
+    emoji: '🥤',
+    name: 'Coca-Cola Helada',
+    desc: 'Lata de 354cc helada de sabor original.',
+    price: 1500,
+    sub: '354cc - Lata',
+    featured: false,
+    image: '',
+    extras: [],
+    remove: [],
+    available: true
+  },
+
+  // CATEGORÍA: DIPS (dips)
+  {
+    id: 11,
+    cat: 'dips',
+    emoji: '🥣',
+    name: 'Dip Alioli Ahumado',
+    desc: 'Nuestra deliciosa mayonesa casera con ajo asado y pimentón ahumado.',
+    price: 1200,
+    featured: false,
+    image: '',
+    extras: [],
+    remove: [],
+    available: true
+  },
+  {
+    id: 12,
+    cat: 'dips',
+    emoji: '🥣',
+    name: 'Dip Barbacoa de la Casa',
+    desc: 'Salsa barbacoa artesanal caramelizada.',
+    price: 1200,
+    featured: false,
+    image: '',
+    extras: [],
+    remove: [],
+    available: true
+  },
+  {
+    id: 13,
+    cat: 'dips',
+    emoji: '🥣',
+    name: 'Dip Queso Azul',
+    desc: 'Crema suave de queso azul y hierbas frescas.',
+    price: 1500,
+    featured: false,
+    image: '',
+    extras: [],
+    remove: [],
+    available: true
+  },
+
+  // CATEGORÍA: COMBOS (combo)
   {
     id: 8,
     cat: 'combo',

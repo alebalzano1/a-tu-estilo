@@ -1,309 +1,432 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hamburguesas A Tu Estilo 🍔🔥</title>
-  
-  <!-- Premium Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
-  
-  <!-- Firebase SDK Compat -->
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
-  
-  <!-- Firebase Config, Seed & Service -->
-  <script src="firebase-config.js"></script>
-  <script src="seed-data.js"></script>
-  <script src="firebase-service.js"></script>
-  
-  <!-- Main Redesigned Stylesheet -->
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hamburguesas A Tu Estilo | A tu estilo o nada 🍔🔥</title>
+    
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK Compat -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    
+    <!-- Firebase Config, Seed & Service -->
+    <script src="firebase-config.js"></script>
+    <script src="seed-data.js"></script>
+    <script src="firebase-service.js"></script>
+
+    <!-- Main Stylesheet -->
+    <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-  <!-- DYNAMIC EMBERS BACKGROUND EFFECT -->
-  <div class="ember-glow-backdrop"></div>
-
-  <!-- HEADER NAVIGATION BAR -->
-  <nav>
-    <a class="nav-logo" href="#inicio"><span class="logo-long-text">HAMBURGUESAS</span> <em>A TU ESTILO</em> 🍔</a>
-    
-    <div class="nav-status" id="navStatus">
-      <div class="status-dot" id="statusDot"></div>
-      <span class="status-text" id="statusText">Abierto</span>
-    </div>
-    
-    <ul class="nav-links">
-      <li><a href="#menu">Menú</a></li>
-      <li><a href="#promos">Promos</a></li>
-      <li><a href="#contacto">Delivery</a></li>
-    </ul>
-    
-    <div class="nav-right">
-      <!-- Embedded dynamic search input -->
-      <div class="search-wrapper">
-        <span class="search-icon">🔍</span>
-        <input type="text" id="searchMenu" class="search-input" placeholder="Buscar en la carta...">
-      </div>
-      
-      <!-- Interactive cart button -->
-      <button class="btn-cart" onclick="toggleCart()">
-        🛒 Carrito <span class="cart-count" id="cartCount">0</span>
-      </button>
-      
-      <a href="https://wa.link/7mvnyb" target="_blank" class="btn-nav-wa">Pedir Ya</a>
-    </div>
-  </nav>
-
-  <!-- HERO HEADER (PREMIUM 3D PRESENTATION) -->
-  <section id="inicio">
-    <div class="hero-glow"></div>
-    <div class="hero-content">
-      <div class="hero-eyebrow">🔥 EL ARTE DEL FUEGO Y LA PARRILLA</div>
-      <h1 class="hero-title">
-        A TU
-        <span class="accent">ESTILO</span>
-        <span class="outline">O NADA</span>
-      </h1>
-      <p class="hero-sub">
-        Experimentá el sabor salvaje de las mejores hamburguesas smashed de carne 100% Angus certificada. Asadas a las brasas calientes y personalizadas a tu gusto.
-      </p>
-      
-      <div class="hero-btns">
-        <a href="#menu" class="btn-primary">🍔 Explorar Menú</a>
-        <a href="https://wa.link/7mvnyb" target="_blank" class="btn-ghost">Contacto Directo</a>
-      </div>
-      
-      <!-- Quick Info Strips -->
-      <div class="hero-strips">
-        <div class="hero-strip-item">
-          <span class="strip-label">Parrilla Abierta</span>
-          <span class="strip-val">20:00 — 23:30</span>
-        </div>
-        <div class="hero-strip-item">
-          <span class="strip-label">Días de Fuego</span>
-          <span class="strip-val">Mar a Dom</span>
-        </div>
-        <div class="hero-strip-item">
-          <span class="strip-label">Método de pago</span>
-          <span class="strip-val">Efectivo + Transfer</span>
-        </div>
-        <div class="hero-strip-item">
-          <span class="strip-label">Zona Delivery</span>
-          <span class="strip-val">Consultar Cobertura</span>
-        </div>
-      </div>
-    </div>
-    
-    <!-- 3D Parallax visual box -->
-    <div class="hero-visual">
-      <div class="hero-visual-inner floating">
-        <div class="hero-glow-circle"></div>
-        <div class="ring"><span class="ring-dot">🔥</span></div>
-        <div class="hero-premium-image-container">
-          <img src="assets/capitana.png" class="hero-burger-img" alt="La Capitana Smashed Burger">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- DYNAMIC RUNNING TEXT MARQUEE -->
-  <div class="marquee-bar">
-    <div class="marquee-inner">
-      ★ 100% CARNE ANGUS SELECCIONADA <span class="sep">◆</span> PARRILLA ARTESANAL <span class="sep">◆</span> PAN CASERO HORNEADO DIARIO <span class="sep">◆</span> DELIVERY CALIENTE RÁPIDO <span class="sep">◆</span> SABOR LEGÍTIMO A TU ESTILO <span class="sep">◆</span> 🔥 <span class="sep">◆</span> MAR A DOM 20:00 A 23:30HS <span class="sep">◆</span>
-      ★ 100% CARNE ANGUS SELECCIONADA <span class="sep">◆</span> PARRILLA ARTESANAL <span class="sep">◆</span> PAN CASERO HORNEADO DIARIO <span class="sep">◆</span> DELIVERY CALIENTE RÁPIDO <span class="sep">◆</span> SABOR LEGÍTIMO A TU ESTILO <span class="sep">◆</span> 🔥 <span class="sep">◆</span> MAR A DOM 20:00 A 23:30HS <span class="sep">◆</span>
-    </div>
-  </div>
-
-  <!-- MENU SECTION -->
-  <section class="section" id="menu">
-    <div class="menu-header">
-      <div class="reveal">
-        <div class="section-label">Creado en las brasas</div>
-        <h2 class="section-title">NUESTRA <span class="ol">CARTA</span></h2>
-      </div>
-      
-      <!-- Interactive horizontal touch filter tabs -->
-      <div class="menu-tabs reveal">
-        <button class="tab-btn active" data-cat="all">Todos</button>
-        <button class="tab-btn" data-cat="hamburgesa">Hamburguesas</button>
-        <button class="tab-btn" data-cat="papas">Papas Rústicas</button>
-        <button class="tab-btn" data-cat="bebidas">Bebidas Naturales</button>
-        <button class="tab-btn" data-cat="combo">Combos Brutales</button>
-      </div>
-    </div>
-    
-    <!-- JavaScript Rendered Dynamic Menu Grid -->
-    <div class="menu-grid" id="menuGrid"></div>
-  </section>
-
-  <!-- PROMOS SECTION -->
-  <section class="section promos-section" id="promos">
-    <div class="reveal">
-      <div class="section-label">Para saciar el fuego</div>
-      <h2 class="section-title">COMBOS & <span class="ol">PROMOS</span></h2>
-    </div>
-    
-    <div class="promos-grid" id="promosGrid">
-      <!-- Carga dinámica desde Firestore / LocalStorage -->
-    </div>
-    
-    <p style="text-align:center; margin-top:35px; font-size:0.85rem; color:var(--text-muted); font-family:var(--font-condensed); letter-spacing:0.15em; text-transform:uppercase;">
-      🎁 Con compras superiores a 2 hamburguesas, ¡dip alioli ahumado de regalo!
-    </p>
-  </section>
-
-  <!-- CONTACT & COVERAGE DELIVERY SECTION -->
-  <section class="section" id="contacto">
-    <div class="reveal">
-      <div class="section-label">Directo a tu puerta</div>
-      <h2 class="section-title">ZONA DE <span class="ol">DELIVERY</span></h2>
-    </div>
-    
-    <div class="contact-grid">
-      <!-- Info blocks -->
-      <div class="info-blocks reveal" style="transition-delay:0.1s">
-        <div class="info-block">
-          <div class="info-icon">🛵</div>
-          <h4>Envío Express</h4>
-          <p>Llegamos rápido para que comas la burger caliente como recién salida de la parrilla. Consultá tarifas de delivery por WhatsApp.</p>
-        </div>
-        <div class="info-block">
-          <div class="info-icon">⏰</div>
-          <h4>Nuestros Horarios</h4>
-          <p><strong>Martes a Domingo</strong><br>20:00hs a 23:30hs<br><span style="color:var(--text-muted); font-size:0.8rem">Lunes: cerrado por mantenimiento de brasas</span></p>
-        </div>
-        <div class="info-block">
-          <div class="info-icon">💳</div>
-          <h4>Medios de Pago</h4>
-          <p>Aceptamos Mercado Pago, transferencias bancarias directas y efectivo contra entrega.</p>
-        </div>
-        <div class="info-block">
-          <div class="info-icon">📲</div>
-          <h4>Pedidos Digitales</h4>
-          <p>Armá tu pedido interactivo en esta web, configuralo a tu estilo y envialo en 1 clic directamente a nuestro WhatsApp.</p>
+    <!-- NAVBAR NAVIGATION BAR -->
+    <nav>
+        <a class="nav-logo" href="#inicio">
+            <span class="logo-long-text">HAMBURGUESAS</span> <em>A TU ESTILO</em> 🍔
+        </a>
+        
+        <div class="nav-status">
+            <div class="status-dot" id="statusDot"></div>
+            <span class="status-text" id="statusText">Abierto</span>
         </div>
         
-        <div class="info-block wide">
-          <div class="info-icon">📸</div>
-          <h4>Nuestra Comunidad</h4>
-          <p>
-            Seguinos en Instagram <a href="https://instagram.com/hamburguesas_a_tu_estilo" target="_blank" style="color:var(--fire); font-weight:600;">@hamburguesas_a_tu_estilo</a>. Subimos promos relámpago, sorteos brutales y fotos del fuego de cada noche.
-          </p>
+        <ul class="nav-links">
+            <li><a href="#menu">Menú</a></li>
+            <li><a href="#promos">Promos</a></li>
+            <li><a href="#contacto">Contacto</a></li>
+        </ul>
+        
+        <a href="https://wa.me/5491137410000" target="_blank" class="btn-nav" id="btnNavWa">Pedir Ya</a>
+    </nav>
+
+    <!-- HERO HEADER SECTION -->
+    <section class="hero" id="inicio">
+        <div class="hero-bg-img"></div>
+        <div class="hero-bg-gradient"></div>
+        <div class="hero-tag" id="heroTag">Bs As · Zona Delivery · Smashed Angus</div>
+        <h1 class="hero-title">A TU <em>ESTILO</em></h1>
+        <p class="hero-sub" id="heroSub">A tu estilo o nada</p>
+        
+        <div class="hero-btns">
+            <a href="#menu" class="btn-hero-primary">Explorar la Carta</a>
+            <a href="https://wa.me/5491137410000" target="_blank" class="btn-hero-secondary" id="heroWaBtn">Pedir por WhatsApp</a>
         </div>
-      </div>
-      
-      <!-- Interactive Maps Placeholder -->
-      <div class="map-placeholder reveal" style="transition-delay:0.2s">
-        <div class="map-emoji">📍</div>
-        <p><strong>Área de Cobertura Principal</strong><br>Enviamos en toda la zona comercial y barrios aledaños. Consultanos con tu ubicación en tiempo real.</p>
-        <a href="https://wa.link/7mvnyb" target="_blank" class="btn-primary" style="margin-top:10px; font-size:0.85rem; padding:12px 30px">
-          💬 Consultar Dirección
+        
+        <!-- Quick Info Strips -->
+        <div class="hero-pills">
+            <div class="pill">📍 <strong id="heroDeliveryPill">Zona de Delivery</strong></div>
+            <div class="pill">⏰ Mar a Dom: <strong>20:00 — 23:30</strong></div>
+            <div class="pill">🛵 <strong>Envío Rápido</strong></div>
+            <div class="pill" id="heroPhonePill">📱 <strong>11 3741-0000</strong></div>
+        </div>
+    </section>
+
+    <!-- DYNAMIC RUNNING TEXT MARQUEE -->
+    <div class="marquee-wrap">
+        <div class="marquee-track">
+            <span>SMASH BURGER</span><span class="dot">◆</span><span>100% CARNE ANGUS</span><span class="dot">◆</span><span>PAN CASERO HORNEADO DIARIO</span><span class="dot">◆</span><span>A TU ESTILO O NADA</span><span class="dot">◆</span><span>BRASAS AL ROJO VIVO</span><span class="dot">◆</span><span>DELIVERY CALIENTE</span><span class="dot">◆</span>
+            <span>SMASH BURGER</span><span class="dot">◆</span><span>100% CARNE ANGUS</span><span class="dot">◆</span><span>PAN CASERO HORNEADO DIARIO</span><span class="dot">◆</span><span>A TU ESTILO O NADA</span><span class="dot">◆</span><span>BRASAS AL ROJO VIVO</span><span class="dot">◆</span><span>DELIVERY CALIENTE</span><span class="dot">◆</span>
+        </div>
+    </div>
+
+    <!-- VICIO-STYLE MENU SECTION -->
+    <section id="menu" class="menu-vicio-section">
+        <!-- Sticky Tabs Container -->
+        <div class="category-tabs-container" id="stickyTabs">
+            <div class="category-tabs">
+                <!-- Hamburguesas -->
+                <button class="tab-btn active" data-target="category-hamburgesas">
+                    <div class="tab-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 11a5 5 0 0 1 5-5h8a5 5 0 0 1 5 5H3z" />
+                            <path d="M21 11v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2" />
+                            <path d="M2 15h20v2H2z" />
+                            <path d="M4 17a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2H4z" />
+                        </svg>
+                    </div>
+                    <span>Burgers</span>
+                </button>
+                <!-- Papas -->
+                <button class="tab-btn" data-target="category-papas">
+                    <div class="tab-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M5 10V21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V10" />
+                            <path d="M3 10h18" />
+                            <path d="M8 10V3M12 10V2M16 10V4" />
+                            <path d="M6 10l1-5M18 10l-1-4" />
+                        </svg>
+                    </div>
+                    <span>Papas</span>
+                </button>
+                <!-- Bebidas -->
+                <button class="tab-btn" data-target="category-bebidas">
+                    <div class="tab-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M6 10V21a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V10" />
+                            <path d="M5 10h14" />
+                            <path d="M15 10l2-7" />
+                            <path d="M12 10V3" />
+                        </svg>
+                    </div>
+                    <span>Bebidas</span>
+                </button>
+                <!-- Dips -->
+                <button class="tab-btn" data-target="category-dips">
+                    <div class="tab-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M3 12h18" />
+                            <path d="M4 12c0 5 1.5 8 8 8s8-3 8-8H4z" />
+                            <path d="M6 8c0-2.2 2.7-4 6-4s6 1.8 6 4H6z" />
+                        </svg>
+                    </div>
+                    <span>Dips</span>
+                </button>
+                <!-- Combos -->
+                <button class="tab-btn" data-target="category-combos">
+                    <div class="tab-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="9" cy="21" r="1" />
+                            <circle cx="20" cy="21" r="1" />
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                        </svg>
+                    </div>
+                    <span>Combos</span>
+                </button>
+            </div>
+        </div>
+
+        <div class="vicio-catalog">
+            <!-- CATEGORÍA HAMBURGUESAS -->
+            <div id="category-hamburgesas" class="category-group">
+                <h3 class="vicio-category-title">Hamburguesas Premium</h3>
+                <div class="vicio-list-container" id="hamburgesasList">
+                    <div class="catalog-loading">🔥 Encendiendo las brasas...</div>
+                </div>
+            </div>
+
+            <!-- CATEGORÍA PAPAS -->
+            <div id="category-papas" class="category-group">
+                <h3 class="vicio-category-title">Papas Rústicas</h3>
+                <div class="vicio-list-container" id="papasList">
+                    <div class="catalog-loading">🍟 Cortando las papas...</div>
+                </div>
+            </div>
+
+            <!-- CATEGORÍA BEBIDAS -->
+            <div id="category-bebidas" class="category-group">
+                <h3 class="vicio-category-title">Bebidas Naturales & Latas</h3>
+                <div class="vicio-grid-container" id="bebidasGrid">
+                    <div class="catalog-loading">🥤 Enfriando las bebidas...</div>
+                </div>
+            </div>
+
+            <!-- CATEGORÍA DIPS -->
+            <div id="category-dips" class="category-group">
+                <h3 class="vicio-category-title">Salsas & Dips</h3>
+                <div class="dips-promo-banner">
+                    🎁 Con compras superiores a 2 hamburguesas, ¡dip alioli de regalo!
+                </div>
+                <div class="vicio-list-container" id="dipsList">
+                    <div class="catalog-loading">🥣 Preparando los aderezos...</div>
+                </div>
+            </div>
+
+            <!-- CATEGORÍA COMBOS -->
+            <div id="category-combos" class="category-group">
+                <h3 class="vicio-category-title">Combos Brutales</h3>
+                <div class="vicio-list-container" id="combosList">
+                    <div class="catalog-loading">📦 Preparando los packs...</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PROMOS SECTION -->
+    <section id="promos" class="promos-section">
+        <div class="section-inner">
+            <div class="reveal">
+                <p class="section-label">Para saciar el fuego</p>
+                <h2 class="section-title">Combos & <span class="ol">Promos</span></h2>
+            </div>
+            <div class="promos-grid" id="promosGrid">
+                <!-- Carga dinámica -->
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACT & horary SECTION -->
+    <section id="contacto" class="info-section">
+        <div class="section-inner">
+            <div class="reveal">
+                <p class="section-label">Directo a tu puerta</p>
+                <h2 class="section-title">Horarios & <span class="ol">Delivery</span></h2>
+            </div>
+            <div class="info-grid">
+                <div class="info-box reveal">
+                    <p class="info-box-label">🛵 Área de Entrega</p>
+                    <p class="info-box-title" id="deliveryZoneInfo">Consultar Cobertura</p>
+                    <p>Enviamos en toda la zona comercial y barrios aledaños. Consultanos con tu ubicación en tiempo real.</p>
+                </div>
+                <div class="info-box reveal reveal-d1">
+                    <p class="info-box-label">⏰ Horario de Atención</p>
+                    <p class="info-box-title">Martes a Domingos</p>
+                    <p><strong>20:00 a 23:30hs</strong> — Turno Noche</p>
+                    <p style="margin-top:8px; color:rgba(242, 242, 242, 0.35);">Lunes: cerrado por mantenimiento de brasas</p>
+                </div>
+                <div class="info-box reveal reveal-d2">
+                    <p class="info-box-label">📲 Nuestra Comunidad</p>
+                    <p class="info-box-title">Redes Sociales</p>
+                    <p>
+                        <a href="https://instagram.com/hamburguesas_a_tu_estilo" target="_blank" id="contactInstagram">@hamburguesas_a_tu_estilo</a>
+                        <br><br>
+                        <a href="https://wa.me/5491137410000" target="_blank" id="contactWhatsapp">11 3741-0000</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CALL TO ACTION BANNER -->
+    <section class="cta-banner">
+        <p class="section-label">¿Tenés hambre?</p>
+        <h2 class="section-title">A tu estilo<br>o nada</h2>
+        <p>Armá tu pedido interactivo y envialo en 1 clic directamente a nuestro WhatsApp.</p>
+        <a href="https://wa.me/5491137410000" target="_blank" class="btn-dark" id="ctaWhatsappBtn">💬 Pedir por WhatsApp</a>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-top">
+            <div class="footer-brand">
+                <div class="footer-logo">HAMBURGUESAS <em>A TU ESTILO</em> 🍔</div>
+                <p>El arte del fuego y la parrilla. Carne Angus 100% certificada, smashed y personalizada a tu gusto.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Menú Rápido</h4>
+                <ul>
+                    <li><a href="#inicio">Inicio</a></li>
+                    <li><a href="#menu">Nuestro Menú</a></li>
+                    <li><a href="#promos">Super Promos</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Redes</h4>
+                <ul>
+                    <li><a href="https://instagram.com/hamburguesas_a_tu_estilo" target="_blank" class="footer-ig-link">Instagram</a></li>
+                    <li><a href="https://wa.me/5491137410000" target="_blank" class="footer-wa-link">WhatsApp</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <div>
+                <p>© 2026 Hamburguesas A Tu Estilo · Todos los derechos reservados</p>
+                <p>A tu estilo o nada · Delivery Gourmet</p>
+            </div>
+            <a href="admin.html" class="admin-link">Admin</a>
+        </div>
+    </footer>
+
+    <!-- SOCIAL FLOATING BUTTONS -->
+    <div class="social-floating-buttons">
+        <a href="#" target="_blank" class="social-float-btn instagram" id="floatingInstagram" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+            </svg>
         </a>
-      </div>
+        <a href="#" target="_blank" class="social-float-btn whatsapp" id="floatingWhatsapp" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+            </svg>
+        </a>
     </div>
-  </section>
 
-  <!-- CALL TO ACTION SECTION -->
-  <section class="cta-section">
-    <div class="cta-big reveal">
-      <div>¿TENÉS</div>
-      <div class="f">HAMBRE?</div>
-      <div class="o">PEDÍ YA</div>
-    </div>
-    
-    <div class="cta-btns reveal" style="transition-delay:0.15s">
-      <a href="https://wa.link/7mvnyb" target="_blank" class="btn-wa">💬 Escribinos al WhatsApp</a>
-      <a href="https://instagram.com/hamburguesas_a_tu_estilo" target="_blank" class="btn-ghost">📷 Mirá Nuestro Instagram</a>
-    </div>
-  </section>
+    <!-- MAIN FLOATING CART BUTTON -->
+    <button class="cart-btn" id="cartBtn" aria-label="Ver pedido">
+        🛒
+        <span class="cart-count hidden" id="cartCount">0</span>
+    </button>
 
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-brand">
-      <div class="footer-logo">HAMBURGUESAS <em>A TU ESTILO</em> 🍔</div>
-      <div class="footer-tagline">A tu estilo o nada · Delivery de Hamburguesas Gourmet</div>
-    </div>
+    <!-- CART SIDEBAR DRAWER OVERLAY -->
+    <div class="cart-overlay" id="cartOverlay"></div>
     
-    <div class="footer-copy">
-      © 2026 Hamburguesas A Tu Estilo. Todos los derechos reservados.
-    </div>
-    
-    <div class="footer-socials">
-      <a href="https://instagram.com/hamburguesas_a_tu_estilo" target="_blank" title="Instagram">📸</a>
-      <a href="https://wa.link/7mvnyb" target="_blank" title="WhatsApp">💬</a>
-    </div>
-  </footer>
-
-  <!-- CART SIDEBAR DRAWER OVERLAY -->
-  <div class="overlay" id="overlay" onclick="closeCart()"></div>
-  
-  <!-- CART DRAWER PANEL -->
-  <aside class="cart-drawer" id="cartDrawer">
-    <div class="drawer-head">
-      <div class="drawer-title">🛒 Tu Pedido</div>
-      <button class="btn-close-drawer" onclick="closeCart()">✕</button>
-    </div>
-    
-    <!-- JavaScript Rendered Cart Items / Forms / Receipts -->
-    <div class="drawer-items" id="drawerItems">
-      <div class="drawer-empty">
-        <div class="big">🍔</div>
-        <p>Tu pedido está vacío.<br>¡Agregá algo de nuestro menú gourmet!</p>
-      </div>
-    </div>
-    
-    <div class="drawer-foot">
-      <div class="drawer-total">
-        <span class="total-label">Subtotal</span>
-        <span class="total-val" id="drawerTotal">$0</span>
-      </div>
-      
-      <!-- Multi-use Button (Next step / Submit / WhatsApp) -->
-      <button class="btn-confirm" id="btnConfirm" onclick="handleCheckoutNext()" disabled>
-        💬 Confirmar Pedido
-      </button>
-      
-      <div class="drawer-note">
-        Verificá tus adicionales antes de confirmar el envío.
-      </div>
-    </div>
-  </aside>
-
-  <!-- PRODUCT INGREDIENTS CUSTOMIZER MODAL OVERLAY -->
-  <div class="modal-overlay" id="modalOverlay" onclick="closeModalIfOutside(event)">
-    <div class="modal" id="productModal">
-      
-      <div class="modal-head">
-        <div class="modal-head-title" id="modalCat">DETALLES DEL PRODUCTO</div>
-        <button class="btn-close-drawer" onclick="closeModal()">✕</button>
-      </div>
-      
-      <!-- JavaScript Populated Modal Content -->
-      <div class="modal-body" id="modalBody"></div>
-      
-      <div class="modal-foot">
-        <div class="modal-foot-row">
-          <!-- Quantity adjuster -->
-          <div class="qty-control">
-            <button class="qty-btn" onclick="modalQty(-1)">−</button>
-            <span class="qty-num" id="modalQty">1</span>
-            <button class="qty-btn" onclick="modalQty(1)">+</button>
-          </div>
-          
-          <!-- Confirm Add Button -->
-          <button class="btn-add-cart" onclick="addToCartFromModal()">
-            🛒 Agregar · <span id="modalBtnPrice">$0</span>
-          </button>
+    <!-- CART DRAWER PANEL -->
+    <div class="cart-drawer" id="cartDrawer">
+        <div class="cart-header">
+            <h3>Tu Pedido</h3>
+            <button class="cart-close" id="cartClose">✕</button>
         </div>
-      </div>
-      
-    </div>
-  </div>
+        
+        <!-- Dynamic Cart Items Container -->
+        <div class="cart-items" id="cartItems">
+            <div class="cart-empty" id="cartEmpty">
+                <div class="cart-empty-icon">🍔</div>
+                <p>Tu pedido está vacío</p>
+            </div>
+        </div>
+        
+        <!-- Cart Checkout Footer -->
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span class="cart-total-label">Subtotal</span>
+                <span class="cart-total-num" id="cartTotal">$0</span>
+            </div>
 
-  <!-- Main JavaScript File -->
-  <script src="app.js"></script>
+            <!-- Interactive Checkout Steps Form -->
+            <form class="checkout-form" id="checkoutForm" onsubmit="event.preventDefault();">
+                <!-- Step 1 to 2 transition is handled via JS dynamically inside the drawer -->
+            </form>
+
+            <button class="btn-checkout" id="btnCheckout" disabled>💬 Confirmar Pedido</button>
+            <div id="closedMessage" class="closed-message" style="display: none;"></div>
+        </div>
+    </div>
+
+    <!-- PREMIUM INGREDIENTS CUSTOMIZER MODAL OVERLAY -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal customizer-drawer" id="customizerModal">
+            <!-- Header navigation back/info -->
+            <div class="customizer-header">
+                <button class="customizer-back" id="customizerBack">
+                    <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                    ATRÁS
+                </button>
+                <div class="customizer-location">
+                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                    <span id="customizerLocText">Delivery Gourmet</span>
+                </div>
+            </div>
+
+            <!-- Customizer scrollable content -->
+            <div class="customizer-body">
+                <!-- Product Presentation -->
+                <div class="customizer-hero">
+                    <img id="customizerImg" src="" alt="Burger Presentacion" class="customizer-hero-img">
+                </div>
+
+                <!-- Product Specifications -->
+                <div class="customizer-info">
+                    <div class="customizer-price-tag" id="customizerBasePrice">$0</div>
+                    <h2 class="customizer-title" id="customizerName">LA CAPITANA</h2>
+                    <p class="customizer-desc" id="customizerDesc">Doble medallón smash, queso cheddar, cebolla caramelizada y huevo de campo frito.</p>
+                </div>
+
+                <!-- EXTRAS CUSTOMIZATION -->
+                <div class="customizer-section" id="sectionExtras">
+                    <h3 class="customizer-section-title">¿Querés algún ingrediente extra a tu gusto?</h3>
+                    <div class="extras-list" id="customizerExtrasList">
+                        <!-- Dinámico -->
+                    </div>
+                </div>
+
+                <!-- REMOVALS CUSTOMIZATION -->
+                <div class="customizer-section" id="sectionRemovals">
+                    <h3 class="customizer-section-title">¿Querés quitar algún ingrediente de la receta?</h3>
+                    <div class="removals-container" id="customizerRemovalsList">
+                        <!-- Dinámico -->
+                    </div>
+                </div>
+
+                <!-- PAPAS CROSS-SELL CAROUSEL -->
+                <div class="customizer-section" id="sectionCrossPapas">
+                    <h3 class="customizer-section-title">¿Querés sumar unas Papas Rústicas?</h3>
+                    <div class="cross-sell-carousel" id="crossPapasList">
+                        <!-- Dinámico -->
+                    </div>
+                </div>
+
+                <!-- DIPS CROSS-SELL CAROUSEL -->
+                <div class="customizer-section" id="sectionCrossDips">
+                    <h3 class="customizer-section-title">¿Querés agregar un Dip o Aderezo gourmet?</h3>
+                    <div class="cross-sell-carousel" id="crossDipsList">
+                        <!-- Dinámico -->
+                    </div>
+                </div>
+
+                <!-- DRINKS CROSS-SELL CAROUSEL -->
+                <div class="customizer-section" id="sectionCrossBebidas">
+                    <h3 class="customizer-section-title">¿Te tienta alguna Bebida helada?</h3>
+                    <div class="cross-sell-carousel" id="crossBebidasList">
+                        <!-- Dinámico -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Customizer footer confirmation -->
+            <div class="customizer-footer">
+                <button class="btn-customizer-add" id="btnCustomizerAdd">Añadir 1 al pedido · $0</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- STICKY CART CHIPS BANNER FOR MOBILE -->
+    <div class="sticky-cart-banner" id="stickyCartBanner">
+        <span id="stickyCartContent">🛒 Ver pedido (0 items) · $0 →</span>
+    </div>
+
+    <!-- PREMIUM FLOATING DIRECT-CHECKOUT BAR -->
+    <a href="javascript:void(0)" class="floating-cart-bar" id="floatingCart">
+        <div class="floating-cart-info">
+            <span class="floating-cart-qty" id="floatingQty">0</span>
+            <span class="floating-cart-text">Pedir por WhatsApp 💬</span>
+        </div>
+        <div class="floating-cart-total" id="floatingTotal">
+            $0
+        </div>
+    </a>
+
+    <!-- Main JavaScript File -->
+    <script src="app.js"></script>
 </body>
+
 </html>

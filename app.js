@@ -79,8 +79,18 @@ let selectedExtras = [];
 let selectedRemove = [];
 let currentCheckoutStep = 1;
 
-// Global settings
-const SHOP_WHATSAPP_NUMBER = "5491137410000"; // Can be changed
+// Global dynamic states (Syncs with Firebase Firestore / Local Sandbox)
+let activeMenu = [];
+let storeConfig = {
+  storeName: "Hamburguesas A Tu Estilo",
+  tagline: "A tu estilo o nada",
+  whatsapp: "5491137410000",
+  instagram: "hamburguesas_a_tu_estilo",
+  deliveryZone: "Consultar Cobertura",
+  minOrder: 5000,
+  welcomeMessage: "¡Hola! Quiero hacer un pedido gourmet 🍔",
+  isOpen: true
+};
 let audioEnabled = true;
 
 // ===== 3. CORE AUDIO SYNTH (Web Audio API - No assets needed!) =====
@@ -116,13 +126,9 @@ function renderMenu(cat = 'all') {
   if (!grid) return;
   grid.innerHTML = '';
   
-  // Read stock list from admin settings in localStorage
-  const outOfStockList = JSON.parse(localStorage.getItem('outOfStockProducts') || '[]');
-  const priceChanges = JSON.parse(localStorage.getItem('adminPriceChanges') || '{}');
-  
-  // Filter products
+  const isStoreClosed = !storeConfig.isOpen;
   const searchQuery = document.getElementById('searchMenu')?.value.toLowerCase() || '';
-  const filtered = menu
+  const filtered = activeMenu
     .filter(p => cat === 'all' || p.cat === cat)
     .filter(p => p.name.toLowerCase().includes(searchQuery) || p.desc.toLowerCase().includes(searchQuery));
   
@@ -134,12 +140,21 @@ function renderMenu(cat = 'all') {
   }
   
   filtered.forEach((p, i) => {
-    const isOutOfStock = outOfStockList.includes(p.id);
-    const customPrice = priceChanges[p.id] ? parseFloat(priceChanges[p.id]) : p.price;
+    const isOutOfStock = p.available === false;
+    const priceVal = p.price || 0;
     
     const card = document.createElement('div');
     card.className = 'product-card reveal';
     card.style.transitionDelay = (i * 0.04) + 's';
+    
+    let btnHtml = '';
+    if (isStoreClosed) {
+      btnHtml = `<button class="btn-add" disabled style="background:var(--ash-gray);opacity:0.3;cursor:not-allowed;font-size:0.65rem;padding:4px 8px;width:auto;">CERRADO</button>`;
+    } else if (isOutOfStock) {
+      btnHtml = `<button class="btn-add" disabled style="background:var(--ash-gray);opacity:0.3;cursor:not-allowed;font-size:0.65rem;padding:4px 8px;width:auto;">SIN STOCK</button>`;
+    } else {
+      btnHtml = `<button class="btn-add" onclick="openProductModal(${p.id})">+</button>`;
+    }
     
     card.innerHTML = `
       <div class="card-top">
@@ -153,15 +168,14 @@ function renderMenu(cat = 'all') {
         <div class="card-name">${p.name}</div>
         <div class="card-desc">${p.desc}</div>
         <div class="card-foot">
-          <span class="card-price">$${customPrice.toLocaleString('es-AR')}</span>
-          <button class="btn-add" onclick="openProductModal(${p.id})" ${isOutOfStock ? 'disabled style="background:var(--ash-gray);opacity:0.3;cursor:not-allowed;"' : ''}>+</button>
+          <span class="card-price">$${priceVal.toLocaleString('es-AR')}</span>
+          ${btnHtml}
         </div>
       </div>
     `;
     grid.appendChild(card);
   });
   
-  // Activate observer animations
   observeReveal();
 }
 
@@ -187,7 +201,7 @@ document.getElementById('searchMenu')?.addEventListener('input', () => {
 
 // ===== 5. INTERACTIVE MENU DETAIL MODAL =====
 function openProductModal(id) {
-  const p = menu.find(x => x.id === id);
+  const p = activeMenu.find(x => x.id === id);
   if (!p) return;
   
   currentProduct = p;
@@ -195,8 +209,7 @@ function openProductModal(id) {
   selectedExtras = [];
   selectedRemove = [];
   
-  const priceChanges = JSON.parse(localStorage.getItem('adminPriceChanges') || '{}');
-  const actualPrice = priceChanges[p.id] ? parseFloat(priceChanges[p.id]) : p.price;
+  const actualPrice = p.price || 0;
   
   document.getElementById('modalCat').textContent = catLabel(p.cat);
   
@@ -323,8 +336,7 @@ function getExtrasSubtotal() {
 
 function updateModalFooterPrice() {
   if (!currentProduct) return;
-  const priceChanges = JSON.parse(localStorage.getItem('adminPriceChanges') || '{}');
-  const basePrice = priceChanges[currentProduct.id] ? parseFloat(priceChanges[currentProduct.id]) : currentProduct.price;
+  const basePrice = currentProduct.price || 0;
   const finalSinglePrice = basePrice + getExtrasSubtotal();
   const totalPrice = finalSinglePrice * modalQtyVal;
   document.getElementById('modalBtnPrice').textContent = '$' + totalPrice.toLocaleString('es-AR');
@@ -337,8 +349,7 @@ function addToCartFromModal() {
   const extras = selectedExtras.map(idx => p.extras[idx]);
   const removals = selectedRemove.map(idx => 'Sin ' + p.remove[idx]);
   
-  const priceChanges = JSON.parse(localStorage.getItem('adminPriceChanges') || '{}');
-  const basePrice = priceChanges[p.id] ? parseFloat(priceChanges[p.id]) : p.price;
+  const basePrice = p.price || 0;
   const finalUnitPrice = basePrice + getExtrasSubtotal();
   
   const cartItem = {
@@ -582,17 +593,10 @@ function processCheckoutSubmit() {
   
   if (!name) {
     alert("Por favor, ingresá tu nombre.");
-    return;
-  }
-  if (method === 'delivery' && !address) {
-    alert("Por favor, ingresá tu dirección para el envío.");
-    return;
-  }
-  
-  // Compile checkout data
+    retu  // Compile checkout data
   currentCheckoutStep = 3;
   const totalVal = cart.reduce((s, x) => s + x.price * x.qty, 0);
-  const ticketNumber = "GC-" + Math.floor(1000 + Math.random() * 9000);
+  const ticketNumber = "ATE-" + Math.floor(1000 + Math.random() * 9000);
   const dateStr = new Date().toLocaleDateString('es-AR') + ' ' + new Date().toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit' });
   
   const orderDetails = {
@@ -610,16 +614,11 @@ function processCheckoutSubmit() {
       notes: i.notes
     })),
     total: totalVal,
-    status: 'Pendiente' // For admin board interaction
+    status: 'Pendiente'
   };
   
-  // Save order to LocalStorage list so the Admin Dashboard can read it in real time!
-  const currentOrders = JSON.parse(localStorage.getItem('adminOrders') || '[]');
-  currentOrders.unshift(orderDetails);
-  localStorage.setItem('adminOrders', JSON.stringify(currentOrders));
-  
-  // Trigger a Storage Event so that admin.html tab wakes up instantly!
-  localStorage.setItem('hamburgesas_estilo_new_order_trigger', Date.now());
+  // Save order to namespaced FirebaseService (cloud or local storage automatically)
+  FirebaseService.saveOrder(orderDetails);
   
   // Render animated thermal ticket screen
   document.querySelector('.drawer-title').textContent = '✅ ¡Pedido Generado!';
@@ -707,7 +706,8 @@ function sendWhatsAppFinal(order) {
   msg += '¡Quedo a la espera de las brasas! 🔥🍔';
   
   const encoded = encodeURIComponent(msg);
-  window.open(`https://wa.me/${SHOP_WHATSAPP_NUMBER}?text=${encoded}`, '_blank');
+  const waPhone = storeConfig.whatsapp || "5491137410000";
+  window.open(`https://wa.me/${waPhone}?text=${encoded}`, '_blank');
   
   // Clear cart after sending order
   cart = [];
@@ -758,17 +758,97 @@ if (heroVisual) {
   });
 }
 
-// ===== 9. ADMIN LIVE SYNC LISTENERS =====
-// If admin page modifies product stock or price in another tab, this tab receives notification
+// ===== 9. ADMIN LIVE SYNC & REALTIME DATABASE LOADER =====
+async function loadCloudDataAndInit() {
+  // 1. Cargar Configuración General
+  try {
+    const config = await FirebaseService.getConfig();
+    if (config) {
+      storeConfig = config;
+    } else {
+      if (!FirebaseService.isCloudActive()) {
+        localStorage.setItem("ate_config", JSON.stringify(storeConfig));
+      }
+    }
+  } catch (e) {
+    console.error("Error al obtener la configuración:", e);
+  }
+  
+  // 2. Cargar Productos y Stock
+  try {
+    const products = await FirebaseService.getProducts();
+    if (products && products.length > 0) {
+      activeMenu = products;
+    } else {
+      activeMenu = [...menu];
+      if (!FirebaseService.isCloudActive()) {
+        localStorage.setItem("ate_products", JSON.stringify(menu));
+      }
+    }
+  } catch (e) {
+    console.error("Error al obtener los productos:", e);
+    activeMenu = [...menu];
+  }
+  
+  // 3. Renderizar Vista
+  renderMenu();
+  loadPromos();
+  updateStatusBadge();
+}
+
+function updateStatusBadge() {
+  const badge = document.getElementById('navStatus');
+  const dot = document.getElementById('statusDot');
+  const text = document.getElementById('statusText');
+  if (!badge || !dot || !text) return;
+  
+  if (storeConfig.isOpen) {
+    badge.classList.remove('closed');
+    dot.classList.remove('closed');
+    text.classList.remove('closed');
+    text.textContent = "Abierto";
+  } else {
+    badge.classList.add('closed');
+    dot.classList.add('closed');
+    text.classList.add('closed');
+    text.textContent = "Cerrado";
+  }
+}
+
+async function loadPromos() {
+  const promosGrid = document.getElementById('promosGrid');
+  if (!promosGrid) return;
+  
+  try {
+    const list = await FirebaseService.getPromos();
+    const activePromos = (list && list.length > 0) ? list : window.initialPromos;
+    if (activePromos && activePromos.length > 0) {
+      promosGrid.innerHTML = activePromos.map((pr, i) => `
+        <div class="promo-card reveal" style="transition-delay:${i * 0.1}s">
+          <div class="promo-icon-wrap">${pr.icon || '🎁'}</div>
+          <div class="promo-icon">${pr.icon || '🎁'}</div>
+          <div class="promo-tag">${pr.cond || 'Promo'}</div>
+          <div class="promo-name">${pr.name}</div>
+          <div class="promo-desc">${pr.desc}</div>
+        </div>
+      `).join('');
+      observeReveal();
+    }
+  } catch (e) {
+    console.error("Error loading promos:", e);
+  }
+}
+
+// Escuchar cambios desde otras pestañas (sincronización instantánea de stock/horarios/config)
 window.addEventListener('storage', (e) => {
-  if (e.key === 'outOfStockProducts' || e.key === 'adminPriceChanges') {
-    renderMenu(); // Redraw menu with new stock list or prices instantly!
+  if (e.key === 'ate_stock_sync_trigger' || e.key === 'ate_config_sync_trigger' || e.key === 'ate_status_sync_trigger') {
+    loadCloudDataAndInit();
   }
 });
 
-// Initialize on page load
+// Inicialización de la aplicación
 document.addEventListener('DOMContentLoaded', () => {
   loadCart();
-  renderMenu();
+  loadCloudDataAndInit();
   resetCheckoutSteps();
 });

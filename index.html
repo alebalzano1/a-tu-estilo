@@ -8,6 +8,16 @@
   <!-- Premium Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;600;700;900&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
   
+  <!-- Firebase SDK Compat -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  
+  <!-- Firebase Config, Seed & Service -->
+  <script src="firebase-config.js"></script>
+  <script src="seed-data.js"></script>
+  <script src="firebase-service.js"></script>
+  
   <!-- Main Redesigned Stylesheet -->
   <link rel="stylesheet" href="style.css">
 </head>
@@ -19,6 +29,11 @@
   <!-- HEADER NAVIGATION BAR -->
   <nav>
     <a class="nav-logo" href="#inicio"><span class="logo-long-text">HAMBURGUESAS</span> <em>A TU ESTILO</em> 🍔</a>
+    
+    <div class="nav-status" id="navStatus">
+      <div class="status-dot" id="statusDot"></div>
+      <span class="status-text" id="statusText">Abierto</span>
+    </div>
     
     <ul class="nav-links">
       <li><a href="#menu">Menú</a></li>
@@ -131,36 +146,8 @@
       <h2 class="section-title">COMBOS & <span class="ol">PROMOS</span></h2>
     </div>
     
-    <div class="promos-grid">
-      <!-- Promo 1 -->
-      <div class="promo-card reveal">
-        <div class="promo-icon-wrap">🍔</div>
-        <div class="promo-icon">🍔🍔</div>
-        <div class="promo-tag">Ideal Parejas</div>
-        <div class="promo-name">PROMO DÚO BRUTAL</div>
-        <div class="promo-desc">Dos de nuestras espectaculares hamburguesas clásicas a elección + una porción gigante de papas rústicas crujientes. Perfecto para compartir de a dos.</div>
-        <div class="promo-price">$16.000</div>
-      </div>
-      
-      <!-- Promo 2 -->
-      <div class="promo-card reveal" style="transition-delay:0.1s">
-        <div class="promo-icon-wrap">🍟</div>
-        <div class="promo-icon">🍔🍟🥤</div>
-        <div class="promo-tag">Más vendido</div>
-        <div class="promo-name">COMBO FULL CRAFT</div>
-        <div class="promo-desc">Elegí tu hamburguesa premium preferida de la carta + una porción mediana de papas fritas rústicas + una refrescante limonada o bebida latita fría.</div>
-        <div class="promo-price">$10.500</div>
-      </div>
-      
-      <!-- Promo 3 -->
-      <div class="promo-card reveal" style="transition-delay:0.2s">
-        <div class="promo-icon-wrap">👑</div>
-        <div class="promo-icon">👑🔥🍔</div>
-        <div class="promo-tag">A lo grande</div>
-        <div class="promo-name">LA MONARCA</div>
-        <div class="promo-desc">Tres hamburguesas clásicas a elección + dos porciones de papas cheddar cargadas + dips gourmet de regalo. Especial para juntadas de amigos. Pedir con anticipación.</div>
-        <div class="promo-price">Consultar precio</div>
-      </div>
+    <div class="promos-grid" id="promosGrid">
+      <!-- Carga dinámica desde Firestore / LocalStorage -->
     </div>
     
     <p style="text-align:center; margin-top:35px; font-size:0.85rem; color:var(--text-muted); font-family:var(--font-condensed); letter-spacing:0.15em; text-transform:uppercase;">
